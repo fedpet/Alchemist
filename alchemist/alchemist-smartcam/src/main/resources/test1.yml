@@ -1,9 +1,12 @@
 incarnation: protelis
 
 variables:
+  Seed: &Seed
+    type: LinearVariable
+    #default, min, max, step
+    parameters: [1, 1, 1, 1]
   MaxCamerasPerTarget: &MaxCamerasPerTarget
-    type: ArbitraryVariable
-    parameters: [3]
+    formula: 1
   CameraSpeed: &CameraSpeed
     type: ArbitraryVariable
     parameters: [0.5]
@@ -46,9 +49,15 @@ network-model:
   parameters: [*NetworkConnectionMaxDistance]
 
 seeds:
-  scenario: 0
-  simulation: 1
+  scenario: *Seed
+  simulation: *Seed
 
+export:
+  - time
+  - type: CamerasKCoverage
+    parameters: [vision, wanted, *MaxCamerasPerTarget]
+  - type: DistanceTraveled
+    parameters: [vision]
 
 programs:
   - &Human
@@ -58,7 +67,7 @@ programs:
       actions:
         - type: ZigZagMove
           parameters: [*MaxDistanceBeforeChangeInDirection, *HumanSpeed]
-    - time-distribution: 0.01
+    - time-distribution: 0.02
       type: ChemicalReaction
       actions:
         - type: RandomlyToggleMolecule
@@ -90,7 +99,7 @@ programs:
         - type: ZigZagMove
           parameters: [*MaxDistanceBeforeChangeInDirection, *CameraSpeed]
     - time-distribution: 1
-      program: sm_av
+      program: bc_re
     - program: send
 
 
@@ -111,7 +120,7 @@ displacements:
       type: ProtelisNode
     contents:
       - molecule: Target
-        concentration: wanted
+        concentration: "\"wanted\""
       - molecule: MaxCamerasPerTarget
         concentration: *MaxCamerasPerTarget
       - molecule: FoVDistance
