@@ -99,7 +99,7 @@ programs:
         - type: ZigZagMove
           parameters: [*MaxDistanceBeforeChangeInDirection, *CameraSpeed]
     - time-distribution: 1
-      program: bc_re
+      program: fields
     - program: send
 
 
@@ -125,6 +125,8 @@ displacements:
         concentration: *MaxCamerasPerTarget
       - molecule: FoVDistance
         concentration: *FoVDistance
+      - molecule: EnvironmentSize
+        concentration: *EnvironmentSize
     programs:
       - *Camera
 

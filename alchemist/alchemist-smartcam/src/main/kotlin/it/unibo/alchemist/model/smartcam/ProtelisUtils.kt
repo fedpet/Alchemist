@@ -56,7 +56,7 @@ class ProtelisUtils {
          */
         @JvmStatic
         fun closestPositionToTargetAtDistance(context: AlchemistExecutionContext<Euclidean2DPosition>, target: Euclidean2DPosition, distance: Double) =
-            closestPositionToTargetAtDistance(context.devicePosition, target, distance).toTuple()
+            closestPositionToTargetAtDistance(context.environmentAccess, context.devicePosition, target, distance).toTuple()
 
         /**
          * Returns the elements in the [field] appearing for the least number of devices or an empty [Tuple] if the field is empty.
@@ -132,6 +132,14 @@ class ProtelisUtils {
                 target.node.contains(this) && target.node.getConcentration(this).toBooleanOrNull() ?: false
             }
 
+        /**
+         * Field.map for protelis
+         */
+        @JvmStatic
+        fun mapFieldValues(context: ExecutionContext, field: Field<*>, func: FunctionDefinition) =
+            field.map {
+                JavaInteroperabilityUtils.runProtelisFunctionWithJavaArguments(context, func, listOf(field.get(it)))
+            }
     }
 }
 

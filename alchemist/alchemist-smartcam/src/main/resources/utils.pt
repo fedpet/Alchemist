@@ -80,6 +80,15 @@ public def getFoVCenterDistance() {
     2 * getFoVDistance() / 3
 }
 
+public def unitVector(vector) {
+    let norm = sqrt(vector.get(0) ^ 2 + vector.get(1) ^ 2)
+    if (norm > 0) {
+        [vector.get(0) / norm, vector.get(1) / norm]
+    } else {
+        vector
+    }
+}
+
 public def follow(target) {
     env.put("state", "following");
     env.put("destination", closestPositionToTargetAtDistance(target.getPosition(), getFoVCenterDistance()));
