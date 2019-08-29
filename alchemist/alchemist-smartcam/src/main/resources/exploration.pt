@@ -1,15 +1,11 @@
 module exploration
 import utils
-import it.unibo.alchemist.model.smartcam.ProtelisUtils.mapFieldValues
 
-def nbrVersor() {
-    mapFieldValues(self.nbrVector()) { unitVector(it) }
-}
 
 def getEnvironmentBoundaryForce(envPoint) {
     let myPos = self.getCoordinates()
-    let direction = unitVector(myPos - envPoint)
-    100 / distanceBetweenPos(myPos, envPoint) ^ 2 * direction
+    let versor = unitVector(myPos - envPoint)
+    100 / distanceBetweenPos(myPos, envPoint) ^ 2 * versor
 }
 
 def getEnvironmentBoundariesForces() {
@@ -25,13 +21,13 @@ def getEnvironmentBoundariesForces() {
 }
 
 public def fieldExploration() {
-    let directionFromCamerasField = nbrVersor()
+    let versorsField = nbrVersor()
     let distanceFromCamerasField = self.nbrRange()
     env.putField("LOG_distanceFromCamerasField", distanceFromCamerasField)
     let cameraForces = 1000 / distanceFromCamerasField ^ 2
-    env.putField("LOG_vector", directionFromCamerasField)
+    env.putField("LOG_vector", versorsField)
     env.putField("LOG_cameraForces", cameraForces)
-    env.putField("LOG_cameraDirectedForces", cameraForces * directionFromCamerasField)
+    env.putField("LOG_cameraDirectedForces", cameraForces * versorsField)
     let envBoundariesForces = getEnvironmentBoundariesForces()
     env.put("LOG_envBoundariesForces", envBoundariesForces)
 }
