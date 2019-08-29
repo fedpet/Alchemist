@@ -1,13 +1,12 @@
 package it.unibo.alchemist.model.implementations.actions
 
 import it.unibo.alchemist.model.implementations.geometry.asAngle
-import it.unibo.alchemist.model.implementations.positions.Euclidean2DPosition
 import it.unibo.alchemist.model.interfaces.Context
 import it.unibo.alchemist.model.interfaces.Molecule
 import it.unibo.alchemist.model.interfaces.Node
 import it.unibo.alchemist.model.interfaces.Reaction
 import it.unibo.alchemist.model.interfaces.environments.EuclideanPhysics2DEnvironment
-import it.unibo.alchemist.model.smartcam.concentrationToPosition
+import it.unibo.alchemist.model.smartcam.toPosition
 import org.apache.commons.math3.util.FastMath.toRadians
 import kotlin.math.abs
 import kotlin.math.cos
@@ -28,19 +27,15 @@ class HeadTowardTarget<T> @JvmOverloads constructor(
 
     private val angularSpeedRadians = toRadians(angularSpeedDegrees)
 
-    /**
-     * {@inheritDoc}
-     */
-    override fun cloneAction(n: Node<T>, r: Reaction<T>) =
-        HeadTowardTarget(n, env, r, target, angularSpeedDegrees)
+    override fun cloneAction(n: Node<T>, r: Reaction<T>) = HeadTowardTarget(n, env, r, target, angularSpeedDegrees)
 
     /**
      * Sets the heading of the node according to the target molecule.
      */
     override fun execute() {
         node.getConcentration(target)?.also {
-            val speedRadians = angularSpeedRadians / reaction.rate
-            val targetPosition = concentrationToPosition(it)
+            val speedRadians = angularSpeedRadians / reaction.timeDistribution.rate
+            val targetPosition = it.toPosition(env)
             val myHeading = env.getHeading(node)
             if (targetPosition != myHeading) {
                 if (speedRadians >= 2 * Math.PI) {
@@ -52,16 +47,13 @@ class HeadTowardTarget<T> @JvmOverloads constructor(
                     val absDistance = abs(rotation)
                     if (absDistance > 0) {
                         val newAngle = currentAngle + min(speedRadians, absDistance) * rotation.sign
-                        env.setHeading(node, Euclidean2DPosition(cos(newAngle), sin(newAngle)))
+                        env.setHeading(node, env.makePosition(cos(newAngle), sin(newAngle)))
                     }
                 }
             }
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     override fun getContext() = Context.LOCAL
 
     /**
