@@ -32,12 +32,7 @@ class OverlapRelationsGraph<C>(
      * if [moved] is true.
      */
     fun evaporateAllLinks(moved: Boolean) {
-        _links.replaceAll { _, value ->
-            var newValue = value * evaporationBaseFactor
-            if (moved) {
-                newValue *= evaporationMovementFactor
-            }
-            newValue
-        }
+        val factor = if (moved) evaporationBaseFactor * evaporationMovementFactor else evaporationBaseFactor
+        _links.replaceAll { _, value -> value * factor }
     }
 }

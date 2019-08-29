@@ -13,7 +13,7 @@ import it.unibo.alchemist.model.smartcam.ProtelisUtils.getDataByDevice
 import utils
 
 
-rep(info <- [noTarget(), buildOverlapRelationsGraph(1, 0.995, 0.95)]){
+rep(info <- [noTarget(), buildOverlapRelationsGraph(1, 0.995, 0.95)]) {
     let myTarget = info.get(0);
     let graph = info.get(1);
     let localObjects = getVision();

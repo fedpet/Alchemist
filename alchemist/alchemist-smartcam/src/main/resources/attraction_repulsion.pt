@@ -80,7 +80,7 @@ rep(myTarget <- noTarget()){
 
 
 /*
-// ORIGINALEE
+// ORIGINALE
 env.put("state", "following");
 let mypos = self.getCoordinates();
 let distances = self.nbrRange();

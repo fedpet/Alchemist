@@ -89,10 +89,10 @@ public def follow(target) {
 
 public def explore() {
     env.put("state", "exploring");
-    if(env.has("destination")){
+    if (env.has("destination")) {
         env.remove("destination")
     } else { 0 };
-    if(env.has("heading")){
+    if (env.has("heading")) {
         env.remove("heading")
     } else { 0 };
     noTarget()

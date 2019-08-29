@@ -24,7 +24,7 @@ programs:
   - &Human
     - time-distribution: 1
       type: ChemicalReaction
-      # levy walk / levy flight
+      # levy walk - levy flight
       actions:
         - type: ZigZagMove
           parameters: [1000.0, *HumanSpeed]

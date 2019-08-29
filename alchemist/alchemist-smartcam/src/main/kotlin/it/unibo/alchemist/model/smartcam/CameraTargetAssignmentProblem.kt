@@ -98,13 +98,12 @@ class CameraTargetAssignmentProblem<S, D> {
             GoalType.MINIMIZE,
             NonNegativeConstraint(true))
         val sourceToDestination = mutableMapOf<S, D>()
-        solution.first
-            .forEachIndexed { idx, value ->
-                if (value > 0.0 && idx % totalDestinations < destinations.size) { // exclude the fake destination which counts as a zero
-                    val source = sources[idx / totalDestinations]
-                    sourceToDestination[source] = destinations[idx % totalDestinations]
-                }
+        solution.first.forEachIndexed { idx, value ->
+            if (value > 0.0 && idx % totalDestinations < destinations.size) { // exclude the fake destination which counts as a zero
+                val source = sources[idx / totalDestinations]
+                sourceToDestination[source] = destinations[idx % totalDestinations]
             }
+        }
         return sourceToDestination
     }
 }

@@ -4,7 +4,6 @@
  * following a target.
  *
  * In case there are multiple targets with the least requests number, then the closest one is chosen.
- * (This may differ from Esterle's algorithm: it is unspecified although it seems reasonable)
  */
 
 module bc_re

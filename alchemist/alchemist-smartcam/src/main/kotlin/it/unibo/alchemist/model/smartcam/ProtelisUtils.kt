@@ -119,7 +119,8 @@ class ProtelisUtils {
          */
         @JvmStatic
         fun averageOfTuple(tuple: Tuple) =
-            tuple.map<Any, Number> { require(it is Number); it }.sumByDouble { it.toDouble() } / tuple.size()
+            tuple.map<Any, Number> { require(it is Number); it }
+                .sumByDouble { it.toDouble() } / tuple.size()
 
         /**
          * Check if [target#node] contains a molecule named [attribute] and its concentration can be cast to Boolean,

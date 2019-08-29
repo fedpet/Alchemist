@@ -2,8 +2,6 @@ module simplex
 import protelis:lang:utils
 import protelis:coord:spreading
 import protelis:coord:accumulation
-import java.lang.System.out
-import java.lang.Math.sqrt
 import it.unibo.alchemist.model.smartcam.ProtelisUtils.CameraTargetAssignmentProblem
 import it.unibo.alchemist.model.smartcam.ProtelisUtils.getCenterOfFovAtDistance
 import it.unibo.alchemist.model.smartcam.ProtelisUtils.closestPositionToTargetAtDistance
