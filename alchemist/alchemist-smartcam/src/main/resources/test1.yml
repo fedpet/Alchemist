@@ -127,6 +127,10 @@ displacements:
         concentration: *FoVDistance
       - molecule: EnvironmentSize
         concentration: *EnvironmentSize
+      - molecule: MaxMovementSpeed
+        concentration: *CameraSpeed
+      - molecule: MaxAngularSpeed
+        concentration: *AngularSpeed
     programs:
       - *Camera
 
