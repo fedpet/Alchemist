@@ -1,6 +1,8 @@
 module utils
 import protelis:lang:utils
+import java.lang.Math.cos
 import java.lang.System.out
+import java.lang.Math.sin
 import java.lang.Math.sqrt
 import java.lang.Math.abs
 import java.lang.Math.atan2
@@ -8,6 +10,8 @@ import it.unibo.alchemist.model.smartcam.ProtelisUtils.toTuple
 import it.unibo.alchemist.model.smartcam.ProtelisUtils.closestPositionToTargetAtDistance
 import it.unibo.alchemist.model.smartcam.ProtelisUtils.isTarget
 import it.unibo.alchemist.model.smartcam.ProtelisUtils.mapFieldValues
+import org.protelis.lang.datatype.Option.of
+import org.protelis.lang.datatype.Option.empty
 
 public def log(msg) {
     out.print("[");
@@ -17,17 +21,29 @@ public def log(msg) {
     0
 }
 
+public def optionalOf(value) {
+    of(value)
+}
+
+public def emptyOptional() {
+    empty()
+}
+
 public def forEach(tuple, fun) {
     if (tuple.size() <= 0) {
         0
     } else {
         fun.apply(tuple.get(0))
-        forEach(tuple.tail())
+        forEach(tuple.tail(), fun)
     }
 }
 
 public def directionToAngle(direction) {
     atan2(direction.get(1), direction.get(0))
+}
+
+public def angleToVersor(angle) {
+    [cos(angle), sin(angle)]
 }
 
 public def nbrVersor() {
@@ -105,6 +121,10 @@ public def getFoVDistance() {
 
 public def getFoVCenterDistance() {
     2 * getFoVDistance() / 3
+}
+
+public def getEnvironmentSize() {
+    env.get("EnvironmentSize")
 }
 
 public def unitVector(vector) {

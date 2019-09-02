@@ -13,6 +13,8 @@ import it.unibo.alchemist.model.smartcam.ProtelisUtils.getDataByDevice
 import utils
 
 
+
+
 rep(info <- [noTarget(), buildOverlapRelationsGraph(1, 0.995, 0.95)]) {
     let myTarget = info.get(0);
     let graph = info.get(1);
@@ -24,7 +26,7 @@ rep(info <- [noTarget(), buildOverlapRelationsGraph(1, 0.995, 0.95)]) {
     let devicesToNotify = graph.smooth();
     //env.put("devicesToNotify", devicesToNotify);
     let notifiedDevices = nbr(devicesToNotify);
-    env.putField("notifiedDevices", notifiedDevices);
+    //env.putField("notifiedDevices", notifiedDevices);
     let notifiers = findDevicesByData(notifiedDevices) {
         it.contains(self.getDeviceUID())
     }

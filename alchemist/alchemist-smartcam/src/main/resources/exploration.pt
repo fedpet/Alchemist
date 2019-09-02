@@ -1,16 +1,18 @@
 module exploration
 import utils
+import java.lang.Math.toRadians
 import java.lang.Math.abs
+import java.lang.Math.PI
 
 
 def getEnvironmentBoundaryForce(envPoint) {
     let myPos = self.getCoordinates()
     let versor = unitVector(myPos - envPoint)
-    10000 / distanceBetweenPos(myPos, envPoint) ^ 2 * versor
+    12000 / distanceBetweenPos(myPos, envPoint) ^ 2 * versor
 }
 
 def getEnvironmentBoundariesForce() {
-    let halfEnvSize = env.get("EnvironmentSize") / 2
+    let halfEnvSize = getEnvironmentSize() / 2
     let myCoords = self.getCoordinates()
     let myX = myCoords.get(0)
     let myY = myCoords.get(1)
@@ -21,44 +23,36 @@ def getEnvironmentBoundariesForce() {
     top + right + bottom + left
 }
 
-def chooseNextDirection() {
-    [2 * self.nextRandomDouble() - 1, 2 * self.nextRandomDouble() - 1]
+def randomAngle() {
+    2 * PI * self.nextRandomDouble()
 }
-
-/*
-def messageFromTo(from, to, content) {
-    let local = broadcast(from, [to, content])
-    if (local.get(0) == io) { local[1] } else { none() }
-}
-*/
 
 def chooseDirection() {
-    let HYSTERESIS = 10
-    rep(info <- [self.getCoordinates(), chooseNextDirection(), HYSTERESIS]) {
+    let HYSTERESIS = 0
+    rep(info <- [self.getCoordinates(), randomAngle(), HYSTERESIS]) {
         let lastPos = info.get(0)
-        let myDirection = info.get(1)
+        let myDirectionAngle = info.get(1)
         let hyst = info.get(2)
 
         let myPos = self.getCoordinates()
         let realDirectionOfMovement = lastPos - myPos
         let realDirectionAngle = directionToAngle(realDirectionOfMovement)
-        let myDirectionAngle = directionToAngle(myDirection)
-        myDirection = if((distanceBetweenPos(myPos, lastPos) < getMaxMovementSpeed() / 2
-            && abs(realDirectionAngle - myDirectionAngle) > 1.14)
+        myDirectionAngle = if((distanceBetweenPos(myPos, lastPos) < getMaxMovementSpeed() / 2
+            && abs(realDirectionAngle - myDirectionAngle) > toRadians(90))
             || distanceBetweenPos(myPos, lastPos) < getMaxMovementSpeed() / 4) {
-            if(hyst < 0) {
+            if(hyst <= 0) {
                 hyst = HYSTERESIS
-                chooseNextDirection()
+                randomAngle()
             } else {
                 hyst = hyst - 1
-                myDirection
+                myDirectionAngle
             }
         } else {
-            myDirection
+            myDirectionAngle
         }
-        [myPos, myDirection, hyst]
+        [myPos, myDirectionAngle, hyst]
     } yield {
-        info.get(1)
+        angleToVersor(info.get(1))
     }
 }
 

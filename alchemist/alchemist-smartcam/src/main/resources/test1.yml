@@ -99,7 +99,7 @@ programs:
         - type: ZigZagMove
           parameters: [*MaxDistanceBeforeChangeInDirection, *CameraSpeed]
     - time-distribution: 1
-      program: fields
+      program: sm_av
     - program: send
 
 
