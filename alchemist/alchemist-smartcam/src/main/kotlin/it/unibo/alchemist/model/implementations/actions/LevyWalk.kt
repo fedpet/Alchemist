@@ -1,6 +1,6 @@
 package it.unibo.alchemist.model.implementations.actions
 
-import it.unibo.alchemist.model.implementations.movestrategies.ZigZagRandomTarget
+import it.unibo.alchemist.model.implementations.movestrategies.LevyWalkTarget
 import it.unibo.alchemist.model.implementations.movestrategies.speed.GloballyConstantSpeed
 import it.unibo.alchemist.model.implementations.positions.Euclidean2DPosition
 import it.unibo.alchemist.model.implementations.routes.PolygonalChain
@@ -11,29 +11,24 @@ import it.unibo.alchemist.model.interfaces.movestrategies.RoutingStrategy
 import org.apache.commons.math3.random.RandomGenerator
 
 /**
- * Moves toward a randomly chosen direction for up to distance meters, then chooses another one and so on.
- * @param <T> concentration type
- * @param env environment containing the node
- * @param node the node to move
- * @param reaction the reaction containing this action
- * @param rng random number generator to use for the decisions
- * @param distance the distance to travel before picking another one
- * @param speed the speed
+ * Selects a target based on a random direction extracted from [rng] (which should be an uniform random generator),
+ * and a random distance extracted from a lévy distribution of parameters [location] (aka mu) and [scale] (aka c).
  */
-class ZigZagMove<T>(
+class LevyWalk<T>(
     node: Node<T>,
     reaction: Reaction<T>,
     private val env: Environment<T, Euclidean2DPosition>,
     private val rng: RandomGenerator,
-    private val distance: Double,
-    private val speed: Double
+    private val speed: Double,
+    private val location: Double,
+    private val scale: Double
 ) : AbstractConfigurableMoveNodeWithAccurateEuclideanDestination<T>(
     env,
     node,
     RoutingStrategy { p1, p2 -> PolygonalChain<Euclidean2DPosition>(listOf(p1, p2)) },
-    ZigZagRandomTarget<T>(node, env, rng, distance),
+    LevyWalkTarget<T>(node, env, rng, location, scale),
     GloballyConstantSpeed(reaction, speed)
 ) {
     override fun cloneAction(n: Node<T>, r: Reaction<T>) =
-        ZigZagMove(n, r, env, rng, distance, speed)
+        LevyWalk(n, r, env, rng, speed, location, scale)
 }
